@@ -49,7 +49,7 @@ const List<String> preferenceExamples = [
   'Examples: Soup, Stew, Sauces',
   'Examples: Crackers, Toast, Rice Cakes',
   'Examples: Ice Cream, Popsicles, Cold Drinks',
-  'Examples: Hot Sauce, Chili, Spicy Snacks',
+  'Examples: Hot Sauce, Chilli, Spicy Snacks',
   'Examples: Soy Sauce, Parmesan, Bouillon',
   'Examples: Raw Vegetables, Tofu, Bread Crumbs',
   'Examples: Bread, Cake, Marshmallows',
