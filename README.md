@@ -1,4 +1,6 @@
-# neurodiner
+# NeuroDiner
+Simplifying meals for Neurodivergent minds
+
 
 A new Flutter project.
 
