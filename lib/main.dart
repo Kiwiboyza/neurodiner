@@ -3,8 +3,39 @@ import 'package:provider/provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/people_provider.dart';
 import 'routes.dart';
+import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:core';
+import 'meal.dart';
 
-void main() {
+late Box<Meal> box;
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(MealAdapter());
+  box = await Hive.openBox<Meal>('Meal');
+
+  String csv = 'csv_meals.csv';
+  String fileData = await rootBundle.loadString(csv);
+  List<String> rows = fileData.split("\n");
+  for (int i = 0; i < rows.length; i++) {
+    String row = rows[i];
+    List<String> itemInRow = row.split(",");
+    List<String> allergens = itemInRow[4].split(";");
+    List<String> preferences = itemInRow[5].split(";");
+
+    Meal meal = Meal(
+      int.parse(itemInRow[0]),
+      int.parse(itemInRow[1]),
+      itemInRow[2],
+      int.parse(itemInRow[3]),
+      allergens,
+    );
+
+    int key = int.parse(itemInRow[0]);
+    box.put(key, meal);
+  }
+  
   runApp(
     MultiProvider(
       providers: [
