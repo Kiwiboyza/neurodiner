@@ -23,16 +23,14 @@ class _DaysPageState extends State<DaysPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Grab the person from the route arguments
     person = ModalRoute.of(context)!.settings.arguments as Person;
 
-    // Pre-select days for the person based on the `person.days` list
+    if (person.days.isEmpty) {
+      person.days.addAll(dayNames);
+    }
+
     for (int i = 0; i < dayNames.length; i++) {
-      if (person.days.contains(dayNames[i])) {
-        isEating[i] = true;
-      } else {
-        isEating[i] = false;
-      }
+      isEating[i] = person.days.contains(dayNames[i]);
     }
   }
 

@@ -191,8 +191,16 @@ Future<List<DailyMeal>> chooseMeals(List<Person> people) async {
 
     final eligibleMeals = box.values.where(mealSatisfies).toList();
 
+    // Prioritise meals matching at least one preference tag
+    final preferredMeals = eligibleMeals.where((meal) {
+      final tags = meal.sensoryTags.map((t) => t.toLowerCase().trim()).toSet();
+      return tags.intersection(preferences).isNotEmpty;
+    }).toList();
+
     if (eligibleMeals.isNotEmpty) {
-      final chosenMeal = eligibleMeals[Random().nextInt(eligibleMeals.length)];
+      final chosenMeal = (preferredMeals.isNotEmpty)
+          ? preferredMeals[Random().nextInt(preferredMeals.length)]
+          : eligibleMeals[Random().nextInt(eligibleMeals.length)];
       dailyMeals.add(DailyMeal(day, chosenMeal));
       selectedCategoryIDs.add(chosenMeal.categoryID as int);
     }
