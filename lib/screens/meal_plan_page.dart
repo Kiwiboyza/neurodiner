@@ -35,16 +35,18 @@ class MealPlanPageState extends State<MealPlanPage> {
     }
   }
 
+// Get the next Monday date as a string
   String getNextMondayDateString() {
     DateTime now = DateTime.now();
     DateTime nextMonday = now.add(Duration(days: 8 - now.weekday));
     return DateFormat('EEEE, MMMM d, y').format(nextMonday);
   }
 
+// Generate a meal plan based on the provided list of people
   Future<void> generateMealPlan(List<Person> people) async {
     setState(() {
       _isLoading = true;
-      _errorMessage = null; // Reset any previous error message
+      _errorMessage = null;
     });
 
     try {
@@ -90,12 +92,12 @@ class MealPlanPageState extends State<MealPlanPage> {
             }).toList();
 
         if (eligibleMeals.isNotEmpty) {
-          // Here we are selecting the meal for the day randomly from the eligible meals
+          // Selecting the meal for the day randomly from the eligible meals
           Meal chosen = eligibleMeals[Random().nextInt(eligibleMeals.length)];
           plan.add(DailyMeal(day, chosen));
           usedCategoryIDs.add(chosen.categoryID); // Ensure no category repeats
         } else {
-          // If no meal can be chosen, you may decide to add a placeholder or leave it empty
+          // If no meal can be chosen, add a placeholder
           plan.add(
             DailyMeal(day, Meal.noMeal()),
           ); // Placeholder for no meal selected
@@ -116,6 +118,7 @@ class MealPlanPageState extends State<MealPlanPage> {
     }
   }
 
+// Re-roll a meal for a specific day using the allergens and preferences of the people present on that day
   Future<void> reRollMeal(int index) async {
     final args = ModalRoute.of(context)?.settings.arguments;
     if (args is! List<Person>) {

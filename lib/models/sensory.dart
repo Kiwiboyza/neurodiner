@@ -1,5 +1,7 @@
+
+// Class for sensory preferences conversion from bool to int
 class SensoryPreferences {
-  int salty = 0; // Change from bool to int
+  int salty = 0;
   int sweet = 0;
   int bitter = 0;
   int sour = 0;
@@ -15,7 +17,7 @@ class SensoryPreferences {
   int savoury = 0;
   int fizzy = 0;
   int earthy = 0;
-  int textured = 0; // Change from bool to int
+  int textured = 0;
   int soft = 0;
   int mild = 0;
   int rich = 0;

@@ -33,7 +33,7 @@ class DynamicAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading:
           showHomeButton
               ? Tooltip(
-                message: 'Go to Home', // Tooltip message
+                message: 'Go to Home',
                 child: IconButton(
                   icon: const Icon(Icons.home),
                   onPressed: () {

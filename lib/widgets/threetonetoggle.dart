@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ThreeToneToggle extends StatefulWidget {
   final Function(int)
-  onChanged; // Add onChanged callback to notify the parent widget
+  onChanged; // Callback function to notify the parent widget about the change
   final int currentState; // Set initial state (0, 1, 2)
 
   const ThreeToneToggle({
@@ -29,7 +29,7 @@ class ThreeToneToggleState extends State<ThreeToneToggle> {
     setState(() {
       _toggleState = newState;
     });
-    widget.onChanged(newState); // Notify the parent widget about the change
+    widget.onChanged(newState);
   }
 
   @override

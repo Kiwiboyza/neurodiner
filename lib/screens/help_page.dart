@@ -11,7 +11,7 @@ class HelpPage extends StatefulWidget {
 }
 
 class HelpPageState extends State<HelpPage> {
-  int currentStep = 2; // Start at the third step (after the first two steps)
+  int currentStep = 2;
   final List<String> boxTexts = [
     'Welcome to NeuroDiner! This app is designed to help you create delicious meal plans while considering your and your families allergies and sensory preferences, ensuring a simple, effective meal plan that caters to all.',
     'To get started, follow these simple steps:',
@@ -81,7 +81,7 @@ class HelpPageState extends State<HelpPage> {
             ),
             const SizedBox(height: 16.0),
 
-            // Expanded container for the current step
+            // Wizard-UI style box
             Expanded(
               child: Center(
                 child: Padding(
@@ -122,7 +122,7 @@ class HelpPageState extends State<HelpPage> {
               ),
             ),
 
-            // Row with Back and Next buttons, centered with borders
+            // Wizard UI row with Back and Next buttons, centered with borders
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Row(

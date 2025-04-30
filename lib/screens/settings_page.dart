@@ -133,6 +133,7 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
+/// A simple section header widget to display the icon and title for each section.
 class _SectionHeader extends StatelessWidget {
   final IconData icon;
   final String title;

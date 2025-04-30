@@ -21,7 +21,6 @@ Future<void> main() async {
   List<String> rows = fileData.split("\n");
 
   for (int i = 1; i < rows.length; i++) {
-    // assuming row 0 is header
     String row = rows[i];
     if (row.trim().isEmpty) continue;
 
@@ -42,7 +41,7 @@ Future<void> main() async {
       externalUrl: itemInRow[8],
     );
 
-    await box.put(meal.id, meal); // Use string ID as key
+    await box.put(meal.id, meal);
   }
 
   runApp(
@@ -50,9 +49,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider<PeopleProvider>(create: (_) => PeopleProvider()),
         ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider<SettingsProvider>(
-          create: (_) => SettingsProvider(),
-        ),
+        ChangeNotifierProvider<SettingsProvider>(create: (_) => SettingsProvider()),
       ],
       child: const MyApp(),
     ),

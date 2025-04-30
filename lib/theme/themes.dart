@@ -21,15 +21,10 @@ final ThemeData defaultTheme = ThemeData(
 // Theme 2: Protanopia-Friendly Theme
 final ThemeData protaTheme = ThemeData(
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: const Color.fromARGB(
-    255,
-    130,
-    164,
-    197,
-  ), // light background
+  scaffoldBackgroundColor: const Color.fromARGB(255, 130, 164, 197), // light background
   colorScheme: ColorScheme.dark(
-    primary: const Color(0xFF4CAF50), // richer green
-    secondary: const Color(0xFFFF7043), // soft coral
+    primary: const Color(0xFF4CAF50),
+    secondary: const Color(0xFFFF7043),
     surface: const Color(0xFFF7F9FB),
     onPrimary: Colors.black87,
     onSecondary: Colors.black87,
@@ -46,8 +41,8 @@ final ThemeData deuterTheme = ThemeData(
   brightness: Brightness.dark,
   scaffoldBackgroundColor: const Color.fromARGB(255, 54, 114, 175),
   colorScheme: ColorScheme.dark(
-    primary: const Color(0xFF42A5F5), // stronger blue
-    secondary: const Color(0xFFFF7043), // coral
+    primary: const Color(0xFF42A5F5),
+    secondary: const Color(0xFFFF7043),
     surface: const Color(0xFFF7F8F9),
     onPrimary: Colors.black87,
     onSecondary: Colors.black87,
@@ -64,8 +59,8 @@ final ThemeData tritaTheme = ThemeData(
   brightness: Brightness.dark,
   scaffoldBackgroundColor: const Color.fromARGB(255, 60, 156, 84),
   colorScheme: ColorScheme.dark(
-    primary: const Color.fromARGB(255, 39, 85, 51), // cool teal blue
-    secondary: const Color(0xFFEF9A9A), // soft pink
+    primary: const Color.fromARGB(255, 39, 85, 51),
+    secondary: const Color(0xFFEF9A9A),
     surface: const Color(0xFFF9FAFB),
     onPrimary: Colors.black87,
     onSecondary: Colors.black87,
@@ -80,15 +75,10 @@ final ThemeData tritaTheme = ThemeData(
 // Theme 5: Achromatopsia (Greyscale) Theme
 final ThemeData achromaTheme = ThemeData(
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: const Color.fromARGB(
-    255,
-    161,
-    161,
-    161,
-  ), // soft light grey
+  scaffoldBackgroundColor: const Color.fromARGB(255, 161, 161, 161),
   colorScheme: ColorScheme.dark(
-    primary: const Color(0xFFB0B0B0), // soft grey
-    secondary: const Color(0xFF888888), // slightly darker grey
+    primary: const Color(0xFFB0B0B0),
+    secondary: const Color(0xFF888888),
     surface: const Color(0xFFF2F2F2),
     onPrimary: Colors.black87,
     onSecondary: Colors.black87,

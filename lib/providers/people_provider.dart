@@ -6,16 +6,19 @@ class PeopleProvider extends ChangeNotifier {
 
   List<Person> get people => _people;
 
+  // Method to add a new person
   void addPerson(Person person) {
     _people.add(person);
     notifyListeners();
   }
 
+  // Method to remove a specific person by index
   void removePerson(int index) {
     _people.removeAt(index);
     notifyListeners();
   }
 
+  // Method to update the name of a specific person
   void updateName(int index, String newName) {
     _people[index].name = newName;
     notifyListeners();

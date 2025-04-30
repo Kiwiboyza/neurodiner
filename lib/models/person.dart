@@ -7,7 +7,7 @@ class Person {
 
   Person({
     required this.name,
-    List<String>? allergens, // Use nullable to provide a default of const []
+    List<String>? allergens, 
     List<String>? preferences,
     List<String>? avoidances,
     List<String>? days,

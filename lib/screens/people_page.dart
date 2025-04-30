@@ -27,6 +27,7 @@ class PeoplePageState extends State<PeoplePage> {
     );
   }
 
+  // Method to remove a person
   void _removePerson(BuildContext context, int index) {
     final peopleProvider = Provider.of<PeopleProvider>(context, listen: false);
     peopleProvider.removePerson(index);
@@ -212,6 +213,7 @@ class PeoplePageState extends State<PeoplePage> {
 
             const SizedBox(height: 100),
 
+// Add New Person button
             ElevatedButton(
               onPressed: () => _addNewPerson(context),
               style: ElevatedButton.styleFrom(
@@ -232,6 +234,7 @@ class PeoplePageState extends State<PeoplePage> {
             ),
 
             const SizedBox(height: 100),
+// Generate Meal Plan button
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/mealplan', arguments: people);

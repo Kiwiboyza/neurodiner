@@ -34,6 +34,7 @@ class _AllergensPageState extends State<AllergensPage> {
     }
   }
 
+/// Toggle the allergen selection
   void _toggleAllergen(int index) {
     setState(() {
       isBlocked[index] = !isBlocked[index];
@@ -45,6 +46,7 @@ class _AllergensPageState extends State<AllergensPage> {
     });
   }
 
+/// Reset all allergens to unblocked
   void _resetAllergens() {
     setState(() {
       isBlocked = List<bool>.filled(allergenNames.length, false);
@@ -126,7 +128,7 @@ class _AllergensPageState extends State<AllergensPage> {
           Padding(
             padding: const EdgeInsets.only(
               bottom: 32.0,
-            ), // Add padding here to increase space below buttons
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -138,7 +140,7 @@ class _AllergensPageState extends State<AllergensPage> {
                         minimumSize: const Size(
                           double.infinity,
                           60,
-                        ), // Optional: Larger button height
+                        ),
                       ),
                       child: const Text(
                         'Reset Allergens',
@@ -160,7 +162,7 @@ class _AllergensPageState extends State<AllergensPage> {
                         minimumSize: const Size(
                           double.infinity,
                           60,
-                        ), // Optional: Larger button height
+                        ),
                       ),
                       child: const Text(
                         'Save Allergens',

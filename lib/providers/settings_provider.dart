@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Change Notifier for Calories toggle
 class SettingsProvider extends ChangeNotifier {
   bool _showCalories = true;
 

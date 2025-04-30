@@ -67,6 +67,6 @@ const List<String> dayNames = [
   'Sunday',
 ];
 
-// Define the limits for preferences and avoidances
-const int maxPreferences = 5; // Max number of preferences
-const int maxAvoidances = 5; // Max number of avoidances
+// Define the limits for preferences and avoidances in preferences
+const int maxPreferences = 5; 
+const int maxAvoidances = 5; 
