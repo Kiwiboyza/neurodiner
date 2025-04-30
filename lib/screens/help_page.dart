@@ -18,11 +18,11 @@ class HelpPageState extends State<HelpPage> {
     'On the Home Screen, tap the "Make a meal plan" button.',
     'On the People Page, begin by adding the people you are catering for.',
     'For each person, select their allergies, sensory preferences, and days they will be eating at home.',
-    'For allergies, select the allergens they want to avoid. They will be highlighted in red with a ☠ symbol.',
-    'For sensory preferences, select the types of food that they want to avoid. They will also be highlighted in red with a ☠ symbol.',
-    'For days at home, select the days they will be eating at home. They will be shown as toggle switches, GREEN for YES, and RED for NO.',
+    'For allergies, select the allergens they want to avoid. When selected, they will be outlined in red, with an X symbol.',
+    'For sensory preferences, there is an assortment of options. For each sensory tag, select either the thumbs up, indicating they prefer that type of food, the thumbs down for foods they tend to avoid, or the hyphen for anything else.',
+    'Select the days they will be eating at home. They will be shown as toggle switches, GREEN for YES, and RED for NO.',
     'Once you have added all the people and their preferences, tap the "Generate meal plan" button.',
-    'On the Meal Plan Page, you will see a list of suggested meals for the week.',
+    'On the Meal Plan Page, you will see a list of suggested meals for the week, along with other allergens, sensory tags, notes, and a link to an external recipe. These meals are selected based on the allergens and sensory preferences of the people you added, only for the days where they will be eating.',
     'Save your customised meal plan for future reference.',
     'Enjoy your delicious and allergen-free meals! Bon appétit!',
   ];
@@ -49,6 +49,7 @@ class HelpPageState extends State<HelpPage> {
       appBar: DynamicAppBar(
         title: 'How to Use NeuroDiner',
         showSettingsButton: true,
+        automaticallyImplyLeading: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -90,10 +91,7 @@ class HelpPageState extends State<HelpPage> {
                     decoration: BoxDecoration(
                       color: boxBackgroundColor,
                       borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 3.0,
-                      ),
+                      border: Border.all(color: Colors.black, width: 3.0),
                     ),
                     child: SingleChildScrollView(
                       child: Column(
@@ -130,52 +128,78 @@ class HelpPageState extends State<HelpPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Back button with border
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: boxBorderColor, width: 2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4), // Remove curve
-                        ),
-                      ),
-                      onPressed: currentStep > 2
-                          ? () {
+                  // Back button with border and Tooltip only if enabled
+                  currentStep > 2
+                      ? Tooltip(
+                        message: 'Go to the previous step',
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: boxBorderColor, width: 2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                            onPressed: () {
                               setState(() {
                                 currentStep--;
                               });
-                            }
-                          : null, // Disable "Back" on first step
-                      child: const Text('Back', style: TextStyle(color: Colors.black)),
-                    ),
-                  ),
-                  const SizedBox(width: 16.0),
-                  // Next button with border
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: boxBorderColor, width: 2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5), // Remove curve
+                            },
+                            child: const Text(
+                              'Back',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
                         ),
-                      ),
-                      onPressed: currentStep < boxTexts.length - 1
-                          ? () {
+                      )
+                      : Container(), // Empty container if disabled
+
+                  const SizedBox(width: 16.0),
+
+                  // Next button with border and Tooltip only if enabled
+                  currentStep < boxTexts.length - 1
+                      ? Tooltip(
+                        message: 'Go to the next step',
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: boxBorderColor, width: 2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () {
                               setState(() {
                                 currentStep++;
                               });
-                            }
-                          : null, // Disable "Next" on last step
-                      child: const Text('Next', style: TextStyle(color: Colors.black)),
-                    ),
-                  ),
+                            },
+                            child: const Text(
+                              'Next',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      )
+                      : Container(), // Empty container if disabled
                 ],
+              ),
+            ),
+
+            // Step indicator
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Text(
+                'Step ${currentStep - 1} of ${boxTexts.length - 2}',
+                style: headerTextStyle.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: boxTextColor,
+                ),
               ),
             ),
 

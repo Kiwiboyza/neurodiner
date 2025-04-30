@@ -58,6 +58,7 @@ class _AllergensPageState extends State<AllergensPage> {
         title: 'Allergens for ${person.name}',
         showHelpButton: true,
         showSettingsButton: true,
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [
@@ -74,41 +75,48 @@ class _AllergensPageState extends State<AllergensPage> {
               itemBuilder: (context, index) {
                 final isSelected = isBlocked[index];
 
-                return ElevatedButton(
-                  onPressed: () => _toggleAllergen(index),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isSelected ? Colors.grey.shade300 : Colors.white,
-                    foregroundColor: Colors.black,
-                    side: BorderSide(
-                      color: isSelected ? Colors.red : Colors.grey,
-                      width: 2,
-                    ),
-                  ),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/logos/${allergenNames[index]}.png',
-                            height: 48,
-                            width: 48,
-                          ),
-                          SizedBox(width: 8),
-                          Text(allergenNames[index]),
-                        ],
+                return Tooltip(
+                  message:
+                      isSelected
+                          ? 'Remove ${allergenNames[index]}'
+                          : 'Block ${allergenNames[index]}',
+                  child: ElevatedButton(
+                    onPressed: () => _toggleAllergen(index),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          isSelected ? Colors.grey.shade300 : Colors.white,
+                      foregroundColor: Colors.black,
+                      side: BorderSide(
+                        color: isSelected ? Colors.red : Colors.grey,
+                        width: 2,
                       ),
-                      if (isSelected)
-                        Positioned(
-                          right: 0,
-                          child: Icon(
-                            Icons.cancel,
-                            color: Colors.red,
-                            size: 64,
-                          ),
+                    ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/logos/${allergenNames[index]}.png',
+                              height: 48,
+                              width: 48,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(allergenNames[index]),
+                          ],
                         ),
-                    ],
+                        if (isSelected)
+                          Positioned(
+                            right: 0,
+                            child: Icon(
+                              Icons.cancel,
+                              color: Colors.red,
+                              size: 64,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -116,34 +124,51 @@ class _AllergensPageState extends State<AllergensPage> {
           ),
           const SizedBox(height: 16),
           Padding(
-            padding: const EdgeInsets.only(bottom: 32.0), // Add padding here to increase space below buttons
+            padding: const EdgeInsets.only(
+              bottom: 32.0,
+            ), // Add padding here to increase space below buttons
             child: Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: _resetAllergens,
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 60), // Optional: Larger button height
-                    ),
-                    child: const Text(
-                      'Reset Allergens',
-                      style: TextStyle(color: Colors.black),
+                  child: Tooltip(
+                    message: 'Reset all allergens to unblocked',
+                    child: ElevatedButton(
+                      onPressed: _resetAllergens,
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(
+                          double.infinity,
+                          60,
+                        ), // Optional: Larger button height
+                      ),
+                      child: const Text(
+                        'Reset Allergens',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Return the updated person to the PeoplePage
-                      Navigator.pop(context, person);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 60), // Optional: Larger button height
-                    ),
-                    child: const Text(
-                      'Save Allergens',
-                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  child: Tooltip(
+                    message: 'Save selected allergens and return',
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Return the updated person to the PeoplePage
+                        Navigator.pop(context, person);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(
+                          double.infinity,
+                          60,
+                        ), // Optional: Larger button height
+                      ),
+                      child: const Text(
+                        'Save Allergens',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),

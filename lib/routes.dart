@@ -8,16 +8,15 @@ import 'screens/allergens_page.dart';
 import 'screens/days_page.dart';
 import 'screens/meal_plan_page.dart';
 
-
 class Routes {
   static Map<String, Widget Function(BuildContext)> get routes => {
-        '/home': (context) => const HomePage(),
-        '/settings': (context) => const SettingsPage(),
-        '/help': (context) => HelpPage(),
-        '/people': (context) => PeoplePage(),
-        '/preferences': (context) => SensoryPreferencesPage(),
-        '/allergens': (context) => AllergensPage(),
-        '/days': (context) => DaysPage(),
-        '/mealplan': (context) => const MealPlanPage(),
-      };
+    '/home': (context) => const HomePage(),
+    '/settings': (context) => const SettingsPage(),
+    '/help': (context) => HelpPage(),
+    '/people': (context) => PeoplePage(),
+    '/preferences': (context) => SensoryPreferencesPage(),
+    '/allergens': (context) => AllergensPage(),
+    '/days': (context) => DaysPage(),
+    '/mealplan': (context) => const MealPlanPage(),
+  };
 }

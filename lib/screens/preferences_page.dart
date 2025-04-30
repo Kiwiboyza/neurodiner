@@ -48,8 +48,31 @@ class SensoryPreferencesPageState extends State<SensoryPreferencesPage> {
     }
   }
 
+  // Helper method to toggle preference states
   void _togglePreference(int index, int state) {
     setState(() {
+      if (state == 2 && person.preferences.length >= maxPreferences) {
+        // If the user tries to add more preferences than allowed, show an alert
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'You can only select up to $maxPreferences preferences.',
+            ),
+          ),
+        );
+        return; // Exit the method if the limit is reached
+      } else if (state == 1 && person.avoidances.length >= maxAvoidances) {
+        // Similarly for avoidances
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'You can only select up to $maxAvoidances avoidances.',
+            ),
+          ),
+        );
+        return;
+      }
+
       preferenceStates[index] = state;
       if (state == 2) {
         person.preferences.add(preferenceNames[index]);
@@ -64,9 +87,57 @@ class SensoryPreferencesPageState extends State<SensoryPreferencesPage> {
     });
   }
 
+  // Helper method to build preference/avoidance buttons
+  IconButton _buildPreferenceButton(
+    int index,
+    int state,
+    String tooltipMessage,
+    IconData icon,
+    Color color,
+  ) {
+    return IconButton(
+      icon: Icon(
+        icon,
+        color:
+            preferenceStates[index] == state
+                ? color
+                : Colors.grey, // Icon color based on state
+        size: 30,
+      ),
+      onPressed: () {
+        // Check if the action is allowed based on the current limit
+        if (state == 2 && person.preferences.length >= maxPreferences) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'You can only select up to $maxPreferences preferences.',
+              ),
+            ),
+          );
+          return; // Prevent action
+        } else if (state == 1 && person.avoidances.length >= maxAvoidances) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'You can only select up to $maxAvoidances avoidances.',
+              ),
+            ),
+          );
+          return;
+        }
+        _togglePreference(index, state);
+      },
+      tooltip: tooltipMessage,
+    );
+  }
+
+  // Method to reset preferences and avoidances
   void _resetPreferences() {
     setState(() {
-      preferenceStates = List<int>.filled(preferenceNames.length, 0); // Reset all states to 0 (Neutral)
+      preferenceStates = List<int>.filled(
+        preferenceNames.length,
+        0,
+      ); // Reset all states to 0 (Neutral)
       person.preferences.clear();
       person.avoidances.clear();
     });
@@ -79,6 +150,7 @@ class SensoryPreferencesPageState extends State<SensoryPreferencesPage> {
         title: 'Preferences for ${person.name}',
         showHelpButton: true,
         showSettingsButton: true,
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [
@@ -86,38 +158,40 @@ class SensoryPreferencesPageState extends State<SensoryPreferencesPage> {
             child: ListView.builder(
               itemCount: preferenceNames.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(preferenceNames[index]),
-                  subtitle: Text(preferenceExamples[index]),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.thumb_up,
-                          color: preferenceStates[index] == 2 ? Colors.green : Colors.grey,
-                          size: 30,
-                        ),
-                        onPressed: () => _togglePreference(index, 2),
+                return Column(
+                  children: [
+                    ListTile(
+                      title: Text(preferenceNames[index]),
+                      subtitle: Text(preferenceExamples[index]),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildPreferenceButton(
+                            index,
+                            2,
+                            'Mark as Liked/Preferred',
+                            Icons.thumb_up,
+                            Colors.green,
+                          ),
+                          _buildPreferenceButton(
+                            index,
+                            0,
+                            'Remove Preference',
+                            Icons.remove,
+                            Colors.black,
+                          ),
+                          _buildPreferenceButton(
+                            index,
+                            1,
+                            'Mark as Avoided/Disliked',
+                            Icons.thumb_down,
+                            Colors.red,
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.remove,
-                          color: preferenceStates[index] == 0 ? Colors.black : Colors.grey,
-                          size: 30,
-                        ),
-                        onPressed: () => _togglePreference(index, 0),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.thumb_down,
-                          color: preferenceStates[index] == 1 ? Colors.red : Colors.grey,
-                          size: 30,
-                        ),
-                        onPressed: () => _togglePreference(index, 1),
-                      ),
-                    ],
-                  ),
+                    ),
+                    const Divider(thickness: 1.0),
+                  ],
                 );
               },
             ),
@@ -126,28 +200,44 @@ class SensoryPreferencesPageState extends State<SensoryPreferencesPage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                // First button with reset action
-                ElevatedButton(
-                  onPressed: _resetPreferences,
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 60), // Optional: Larger button height
+                // Reset preferences button
+                Tooltip(
+                  message: 'Reset all preferences',
+                  child: ElevatedButton(
+                    onPressed: _resetPreferences,
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 60),
+                    ),
+                    child: const Text(
+                      'Reset Preferences',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
-                  child: const Text('Reset Preferences', style: TextStyle(color: Colors.black),),
                 ),
                 const SizedBox(height: 16),
-                // Second button for going back to People page
-                ElevatedButton(
-                  onPressed: () {
-                    // Return the updated person to the PeoplePage
-                    Navigator.pop(context, person);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 60), // Optional: Larger button height
-                  ),
-                  child: const Text(
-                      'Save Preferences',
-                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                // Save preferences button with limitation on enabling it
+                Tooltip(
+                  message: 'Save preferences and return',
+                  child: ElevatedButton(
+                    onPressed:
+                        person.preferences.length <= maxPreferences &&
+                                person.avoidances.length <= maxAvoidances
+                            ? () {
+                              // Return the updated person to the PeoplePage
+                              Navigator.pop(context, person);
+                            }
+                            : null, // Disable button if limits are exceeded
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 60),
                     ),
+                    child: const Text(
+                      'Save Preferences',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

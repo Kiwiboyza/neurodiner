@@ -49,11 +49,37 @@ class Meal extends HiveObject {
       name: fields[1],
       categoryID: fields[2],
       timeOfDay: fields[3],
-      allergens: (fields[4] as String).isEmpty ? [] : fields[4].split(';'),
-      sensoryTags: (fields[5] as String).isEmpty ? [] : fields[5].split(';'),
+      allergens:
+          (fields[4] as String).isEmpty
+              ? []
+              : fields[4]
+                  .split(';')
+                  .map((a) => a.trim().toLowerCase())
+                  .toList(),
+      sensoryTags:
+          (fields[5] as String).isEmpty
+              ? []
+              : fields[5]
+                  .split(';')
+                  .map((s) => s.trim().toLowerCase())
+                  .toList(),
       calories: int.tryParse(fields[6].toString()) ?? 0,
       notes: fields[7] ?? '',
       externalUrl: fields[8] ?? '',
+    );
+  }
+
+  static Meal noMeal() {
+    return Meal(
+      id: 'No Meal',
+      name: 'No Meal Available',
+      categoryID: 'no-category',
+      timeOfDay: 'Any',
+      allergens: ['No Allergens'],
+      sensoryTags: ['No Sensory Tags'],
+      notes: 'No meal found for the selected criteria.',
+      externalUrl: '',
+      calories: 0,
     );
   }
 }

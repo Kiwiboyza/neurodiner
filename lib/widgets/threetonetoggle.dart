@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ThreeToneToggle extends StatefulWidget {
-  final Function(int) onChanged; // Add onChanged callback to notify the parent widget
+  final Function(int)
+  onChanged; // Add onChanged callback to notify the parent widget
   final int currentState; // Set initial state (0, 1, 2)
 
   const ThreeToneToggle({
@@ -41,9 +42,13 @@ class ThreeToneToggleState extends State<ThreeToneToggle> {
           onPressed: () => _setState(1),
           style: OutlinedButton.styleFrom(
             side: BorderSide(
-              color: _toggleState == 1 ? Colors.red : Colors.grey, // Outline color
+              color:
+                  _toggleState == 1 ? Colors.red : Colors.grey, // Outline color
             ),
-            backgroundColor: _toggleState == 1 ? Colors.red : Colors.transparent, // Fill color
+            backgroundColor:
+                _toggleState == 1
+                    ? Colors.red
+                    : Colors.transparent, // Fill color
           ),
           child: Icon(
             Icons.close,
@@ -56,9 +61,15 @@ class ThreeToneToggleState extends State<ThreeToneToggle> {
           onPressed: () => _setState(0),
           style: OutlinedButton.styleFrom(
             side: BorderSide(
-              color: _toggleState == 0 ? Colors.grey : Colors.grey, // Outline color
+              color:
+                  _toggleState == 0
+                      ? Colors.grey
+                      : Colors.grey, // Outline color
             ),
-            backgroundColor: _toggleState == 0 ? Colors.grey : Colors.transparent, // Fill color
+            backgroundColor:
+                _toggleState == 0
+                    ? Colors.grey
+                    : Colors.transparent, // Fill color
           ),
           child: Icon(
             Icons.remove,
@@ -71,14 +82,21 @@ class ThreeToneToggleState extends State<ThreeToneToggle> {
           onPressed: () => _setState(2),
           style: OutlinedButton.styleFrom(
             side: BorderSide(
-              color: _toggleState == 2 ? Colors.green : Colors.grey, // Outline color
+              color:
+                  _toggleState == 2
+                      ? Colors.green
+                      : Colors.grey, // Outline color
             ),
-            backgroundColor: _toggleState == 2 ? Colors.green : Colors.transparent, // Fill color
+            backgroundColor:
+                _toggleState == 2
+                    ? Colors.green
+                    : Colors.transparent, // Fill color
           ),
           child: Icon(
             Icons.check,
             size: 48,
-            color: _toggleState == 2 ? Colors.white : Colors.green, // Icon color
+            color:
+                _toggleState == 2 ? Colors.white : Colors.green, // Icon color
           ),
         ),
       ],

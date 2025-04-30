@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
+import '../functions/functions.dart';
 
 class DynamicAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool showHomeButton;
   final bool showHelpButton;
   final bool showSettingsButton;
+  final bool automaticallyImplyLeading;
 
   const DynamicAppBar({
     required this.title,
     this.showHomeButton = false,
     this.showSettingsButton = false,
     this.showHelpButton = false,
+    this.automaticallyImplyLeading = true,
     super.key,
   });
 
@@ -20,23 +23,24 @@ class DynamicAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final scaffoldColor = themeProvider.themeData.scaffoldBackgroundColor;
-    final appBarColor = darken(scaffoldColor, 0.1);
-
+    final appBarColor = darkenColor(scaffoldColor);
 
     return AppBar(
       centerTitle: true,
       title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
       backgroundColor: appBarColor,
-       leading: showHomeButton
+      automaticallyImplyLeading: automaticallyImplyLeading,
+      leading:
+          showHomeButton
               ? Tooltip(
-                  message: 'Go to Home', // Tooltip message
-                  child: IconButton(
-                    icon: const Icon(Icons.home),
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/home');
-                    },
-                  ),
-                )
+                message: 'Go to Home', // Tooltip message
+                child: IconButton(
+                  icon: const Icon(Icons.home),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/home');
+                  },
+                ),
+              )
               : null,
       actions: [
         // Show Help Button if needed
@@ -67,10 +71,4 @@ class DynamicAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
-  Color darken(Color color, [double amount = .1]) {
-    final hsl = HSLColor.fromColor(color);
-    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
-    return hslDark.toColor();
-  }
 }

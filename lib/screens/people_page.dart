@@ -13,28 +13,31 @@ class PeoplePage extends StatefulWidget {
 }
 
 class PeoplePageState extends State<PeoplePage> {
-  // List of controllers for each person
-  final List<TextEditingController> _controllers = [];
+  // Map of controllers, keyed by person ID or index
+  final Map<int, TextEditingController> _controllers = {};
 
   // Method to add a new person
   void _addNewPerson(BuildContext context) {
     final peopleProvider = Provider.of<PeopleProvider>(context, listen: false);
     final newPersonName = 'User ${peopleProvider.people.length + 1}';
     peopleProvider.addPerson(Person(name: newPersonName));
-    _controllers.add(TextEditingController());
+    // Ensure the new person has a controller
+    _controllers[peopleProvider.people.length - 1] = TextEditingController(
+      text: newPersonName,
+    );
   }
 
   void _removePerson(BuildContext context, int index) {
     final peopleProvider = Provider.of<PeopleProvider>(context, listen: false);
     peopleProvider.removePerson(index);
-    _controllers.removeAt(index);
+    _controllers[index]?.dispose();
+    _controllers.remove(index);
   }
-
 
   @override
   void dispose() {
     // Dispose all controllers when done
-    for (var controller in _controllers) {
+    for (var controller in _controllers.values) {
       controller.dispose();
     }
     super.dispose();
@@ -59,9 +62,9 @@ class PeoplePageState extends State<PeoplePage> {
             Text(
               'Family',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 16),
 
@@ -71,12 +74,17 @@ class PeoplePageState extends State<PeoplePage> {
               itemCount: people.length,
               itemBuilder: (context, index) {
                 // Create a controller for each person if not already created
-                if (_controllers.length <= index) {
-                  _controllers.add(TextEditingController(text: people[index].name));
+                if (!_controllers.containsKey(index)) {
+                  _controllers[index] = TextEditingController(
+                    text: people[index].name,
+                  );
                 }
 
                 return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 16,
+                  ),
                   shape: RoundedRectangleBorder(
                     side: const BorderSide(color: Colors.black, width: 1),
                     borderRadius: BorderRadius.circular(8),
@@ -107,11 +115,16 @@ class PeoplePageState extends State<PeoplePage> {
                           ),
                           onSubmitted: (value) {
                             if (value == '' || value.trim().isEmpty) {
-                              _controllers[index].text = 'User ${index + 1}';
-                              peopleProvider.updateName(index, 'User ${index + 1}');
+                              _controllers[index]!.text = 'User ${index + 1}';
+                              peopleProvider.updateName(
+                                index,
+                                'User ${index + 1}',
+                              );
                             }
                           },
-                          onChanged: (value) => peopleProvider.updateName(index, value),
+                          onChanged:
+                              (value) =>
+                                  peopleProvider.updateName(index, value),
                         ),
                         const SizedBox(height: 8.0),
                         // Horizontal row with 4 buttons (Allergens, Preferences, Days, Remove)
@@ -120,43 +133,71 @@ class PeoplePageState extends State<PeoplePage> {
                           children: [
                             OutlinedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/allergens', arguments: people[index]);
+                                Navigator.pushNamed(
+                                  context,
+                                  '/allergens',
+                                  arguments: people[index],
+                                );
                               },
                               style: OutlinedButton.styleFrom(
                                 side: const BorderSide(color: Colors.black),
-                                backgroundColor: darkenColor(Theme.of(context).colorScheme.surface),
-                                foregroundColor: darkenColor(Theme.of(context).colorScheme.onSurface),
+                                backgroundColor: darkenColor(
+                                  Theme.of(context).colorScheme.surface,
+                                ),
+                                foregroundColor: darkenColor(
+                                  Theme.of(context).colorScheme.onSurface,
+                                ),
                               ),
                               child: const Text("Allergens"),
                             ),
                             OutlinedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/preferences', arguments: people[index]);
+                                Navigator.pushNamed(
+                                  context,
+                                  '/preferences',
+                                  arguments: people[index],
+                                );
                               },
                               style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: Colors.black), // Black border for the button
-                                backgroundColor: darkenColor(Theme.of(context).colorScheme.surface),  // Darkened background
-                                foregroundColor: darkenColor(Theme.of(context).colorScheme.onSurface), // Darkened text color
+                                side: const BorderSide(color: Colors.black),
+                                backgroundColor: darkenColor(
+                                  Theme.of(context).colorScheme.surface,
+                                ),
+                                foregroundColor: darkenColor(
+                                  Theme.of(context).colorScheme.onSurface,
+                                ),
                               ),
                               child: const Text("Preferences"),
                             ),
                             OutlinedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/days', arguments: people[index]);
+                                Navigator.pushNamed(
+                                  context,
+                                  '/days',
+                                  arguments: people[index],
+                                );
                               },
                               style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: Colors.black), // Black border for the button
-                                backgroundColor: darkenColor(Theme.of(context).colorScheme.surface),  // Darkened background
-                                foregroundColor: darkenColor(Theme.of(context).colorScheme.onSurface), // Darkened text color
+                                side: const BorderSide(color: Colors.black),
+                                backgroundColor: darkenColor(
+                                  Theme.of(context).colorScheme.surface,
+                                ),
+                                foregroundColor: darkenColor(
+                                  Theme.of(context).colorScheme.onSurface,
+                                ),
                               ),
                               child: const Text("Days"),
                             ),
                             OutlinedButton(
                               onPressed: () => _removePerson(context, index),
                               style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: Colors.black), // Black border for the button
-                                backgroundColor: darkenColor(Theme.of(context).colorScheme.surface),  // Darkened background
-                                foregroundColor: darkenColor(Theme.of(context).colorScheme.onSurface), // Darkened text color
+                                side: const BorderSide(color: Colors.black),
+                                backgroundColor: darkenColor(
+                                  Theme.of(context).colorScheme.surface,
+                                ),
+                                foregroundColor: darkenColor(
+                                  Theme.of(context).colorScheme.onSurface,
+                                ),
                               ),
                               child: const Text("Remove"),
                             ),
@@ -174,8 +215,12 @@ class PeoplePageState extends State<PeoplePage> {
             ElevatedButton(
               onPressed: () => _addNewPerson(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: darkenColor(Theme.of(context).colorScheme.surface),
-                foregroundColor: darkenColor(Theme.of(context).colorScheme.onSurface),
+                backgroundColor: darkenColor(
+                  Theme.of(context).colorScheme.surface,
+                ),
+                foregroundColor: darkenColor(
+                  Theme.of(context).colorScheme.onSurface,
+                ),
                 minimumSize: const Size(400, 100),
                 textStyle: const TextStyle(fontSize: 18),
                 shape: RoundedRectangleBorder(
@@ -190,16 +235,15 @@ class PeoplePageState extends State<PeoplePage> {
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/mealplan', arguments: people);
-                final personNames = people.map((person) => person.name).join(', ');
-                print('Generating meal plan for: $personNames');
-                print('Allergens: ${people.map((person) => person.allergens).toList()}');
-                print('Preferences: ${people.map((person) => person.preferences).toList()}');
-                print('Avoidances: ${people.map((person) => person.avoidances).toList()}');
-                print('Days: ${people.map((person) => person.days).toList()}');
               },
+
               style: ElevatedButton.styleFrom(
-                backgroundColor: darkenColor(Theme.of(context).colorScheme.surface),
-                foregroundColor: darkenColor(Theme.of(context).colorScheme.onSurface),
+                backgroundColor: darkenColor(
+                  Theme.of(context).colorScheme.surface,
+                ),
+                foregroundColor: darkenColor(
+                  Theme.of(context).colorScheme.onSurface,
+                ),
                 minimumSize: const Size(400, 100),
                 textStyle: const TextStyle(fontSize: 18),
                 shape: RoundedRectangleBorder(

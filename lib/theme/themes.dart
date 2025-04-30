@@ -18,11 +18,15 @@ final ThemeData defaultTheme = ThemeData(
   ),
 );
 
-
 // Theme 2: Protanopia-Friendly Theme
 final ThemeData protaTheme = ThemeData(
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: const Color.fromARGB(255, 130, 164, 197), // light background
+  scaffoldBackgroundColor: const Color.fromARGB(
+    255,
+    130,
+    164,
+    197,
+  ), // light background
   colorScheme: ColorScheme.dark(
     primary: const Color(0xFF4CAF50), // richer green
     secondary: const Color(0xFFFF7043), // soft coral
@@ -76,7 +80,12 @@ final ThemeData tritaTheme = ThemeData(
 // Theme 5: Achromatopsia (Greyscale) Theme
 final ThemeData achromaTheme = ThemeData(
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: const Color.fromARGB(255, 161, 161, 161), // soft light grey
+  scaffoldBackgroundColor: const Color.fromARGB(
+    255,
+    161,
+    161,
+    161,
+  ), // soft light grey
   colorScheme: ColorScheme.dark(
     primary: const Color(0xFFB0B0B0), // soft grey
     secondary: const Color(0xFF888888), // slightly darker grey
@@ -90,8 +99,3 @@ final ThemeData achromaTheme = ThemeData(
     bodyMedium: TextStyle(color: Colors.black87),
   ),
 );
-
-
-
-
-

@@ -39,4 +39,3 @@ class PeopleProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-

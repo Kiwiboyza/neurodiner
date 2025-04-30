@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/dynamic_app_bar.dart';
-import '../functions/functions.dart';
+import '../widgets/buttons.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,60 +8,48 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DynamicAppBar(
+      appBar: const DynamicAppBar(
         title: 'NeuroDiner',
         showSettingsButton: true,
         showHelpButton: true,
       ),
-      body: Center(  // Center widget will horizontally center everything
+      body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,  // Adjusts spacing between widgets
-          crossAxisAlignment: CrossAxisAlignment.center,  // Center everything horizontally
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text(
               'Welcome to NeuroDiner!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,  // Ensures centered text
+              textAlign: TextAlign.center,
             ),
             const Text(
               'Simplifying Meals for Neurodivergent Minds',
               style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,  // Ensures centered text
+              textAlign: TextAlign.center,
             ),
-            // Adjust spacing with Expanded if you want flexible space distribution
             const SizedBox(height: 100),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/help');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: darkenColor(Theme.of(context).colorScheme.surface),  // Darkened background
-                foregroundColor: darkenColor(Theme.of(context).colorScheme.onSurface), // Darkened text color
-                minimumSize: const Size(400, 100),  // Consistent width and height
-                textStyle: const TextStyle(fontSize: 18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),  // Rounded corners for a smoother look
-                  side: const BorderSide(color: Colors.black, width: 2),  // Black border outline
-                ),
+
+            Tooltip(
+              message: 'Learn how to use NeuroDiner',
+              child: HomePageButton(
+                label: 'Learn how to use NeuroDiner',
+                onPressed: () {
+                  Navigator.pushNamed(context, '/help');
+                },
               ),
-              child: const Text('Using NeuroDiner'),
             ),
-            const SizedBox(height: 100),  // Adjust space between buttons
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/people');  // Adjust the action as needed
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: darkenColor(Theme.of(context).colorScheme.surface),  // Darkened background
-                foregroundColor: darkenColor(Theme.of(context).colorScheme.onSurface), // Darkened text color
-                minimumSize: const Size(400, 100),  // Consistent width and height
-                textStyle: const TextStyle(fontSize: 18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),  // Rounded corners
-                  side: const BorderSide(color: Colors.black, width: 2),  // Black border outline
-                ),
+
+            const SizedBox(height: 100),
+
+            Tooltip(
+              message: 'Start building a meal plan',
+              child: HomePageButton(
+                label: 'Make a meal plan',
+                onPressed: () {
+                  Navigator.pushNamed(context, '/people');
+                },
               ),
-              child: const Text('Make a meal plan'),
             ),
           ],
         ),

@@ -20,7 +20,8 @@ Future<void> main() async {
   String fileData = await rootBundle.loadString(csv);
   List<String> rows = fileData.split("\n");
 
-  for (int i = 1; i < rows.length; i++) { // assuming row 0 is header
+  for (int i = 1; i < rows.length; i++) {
+    // assuming row 0 is header
     String row = rows[i];
     if (row.trim().isEmpty) continue;
 
@@ -47,12 +48,8 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<PeopleProvider>(
-          create: (_) => PeopleProvider(),
-        ),
-        ChangeNotifierProvider<ThemeProvider>(
-          create: (_) => ThemeProvider(),
-        ),
+        ChangeNotifierProvider<PeopleProvider>(create: (_) => PeopleProvider()),
+        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
         ChangeNotifierProvider<SettingsProvider>(
           create: (_) => SettingsProvider(),
         ),
@@ -79,7 +76,7 @@ class MyApp extends StatelessWidget {
             return MediaQuery(
               data: mediaQueryData.copyWith(
                 textScaler: TextScaler.linear(
-                  (themeProvider.fontSize / 16.0).clamp(0.8, 2.0), 
+                  (themeProvider.fontSize / 16.0).clamp(0.8, 2.0),
                 ),
               ),
               child: child!,
@@ -93,6 +90,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-

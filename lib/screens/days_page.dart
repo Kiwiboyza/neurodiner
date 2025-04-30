@@ -17,7 +17,10 @@ class _DaysPageState extends State<DaysPage> {
   @override
   void initState() {
     super.initState();
-    isEating = List<bool>.filled(dayNames.length, true); // Default all to true (eating)
+    isEating = List<bool>.filled(
+      dayNames.length,
+      true,
+    ); // Default all to true (eating)
   }
 
   @override
@@ -52,6 +55,7 @@ class _DaysPageState extends State<DaysPage> {
         title: 'Eating for ${person.name}',
         showHelpButton: true,
         showSettingsButton: true,
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -59,16 +63,27 @@ class _DaysPageState extends State<DaysPage> {
           children: [
             // Loop through all days of the week and create a toggle switch for each
             for (int i = 0; i < dayNames.length; i++)
-              _buildPreferenceTile(dayNames[i], isEating[i], () => _toggleDay(i)),
-            ElevatedButton(
-              onPressed: () {
-                // Save preferences and return to the previous screen or apply filters
-                Navigator.pop(context, person);
-              },
-              child: const Text(
-                      'Save Days',
-                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
+              _buildPreferenceTile(
+                dayNames[i],
+                isEating[i],
+                () => _toggleDay(i),
+              ),
+            const SizedBox(height: 20),
+            Tooltip(
+              message: 'Save the selected days',
+              child: ElevatedButton(
+                onPressed: () {
+                  // Save preferences and return to the previous screen or apply filters
+                  Navigator.pop(context, person);
+                },
+                child: const Text(
+                  'Save Days',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -77,14 +92,24 @@ class _DaysPageState extends State<DaysPage> {
   }
 
   // Custom method to build the toggle switch for each day
-  Widget _buildPreferenceTile(String label, bool value, VoidCallback onChanged) {
-    return SwitchListTile(
-      title: Text(label),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-      value: value,
-      onChanged: (_) => onChanged(),  // Toggle day when switch is flipped
-      activeColor: Colors.green,
-      inactiveThumbColor: Colors.red,
+  Widget _buildPreferenceTile(
+    String label,
+    bool value,
+    VoidCallback onChanged,
+  ) {
+    return Tooltip(
+      message: 'Toggle eating on $label',
+      child: SwitchListTile(
+        title: Text(label),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: 16.0,
+        ),
+        value: value,
+        onChanged: (_) => onChanged(), // Toggle day when switch is flipped
+        activeColor: Colors.green,
+        inactiveThumbColor: Colors.red,
+      ),
     );
   }
 }
