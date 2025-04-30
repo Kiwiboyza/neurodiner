@@ -19,7 +19,7 @@ class MealAdapter extends TypeAdapter<Meal> {
     return Meal(
       id: fields[0] as String,
       name: fields[1] as String,
-      category: fields[2] as String,
+      categoryID: fields[2] as String,
       timeOfDay: fields[3] as String,
       allergens: (fields[4] as List).cast<String>(),
       sensoryTags: (fields[5] as List).cast<String>(),
@@ -38,7 +38,7 @@ class MealAdapter extends TypeAdapter<Meal> {
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.category)
+      ..write(obj.categoryID)
       ..writeByte(3)
       ..write(obj.timeOfDay)
       ..writeByte(4)

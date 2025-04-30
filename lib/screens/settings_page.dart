@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
+import '../providers/settings_provider.dart';
 import '../theme/themes.dart';
 import '../widgets/dynamic_app_bar.dart';
 
@@ -58,6 +59,14 @@ class SettingsPage extends StatelessWidget {
             label: themeProvider.fontSize.toStringAsFixed(0),
             onChanged: (newSize) {
               themeProvider.setFontSize(newSize);
+            },
+          ),
+
+          SwitchListTile(
+            title: const Text('Show Calories'),
+            value: context.watch<SettingsProvider>().showCalories,
+            onChanged: (bool value) {
+              context.read<SettingsProvider>().toggleShowCalories(value);
             },
           ),
         ],

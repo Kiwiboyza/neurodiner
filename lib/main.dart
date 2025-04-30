@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/people_provider.dart';
+import 'providers/settings_provider.dart';
 import 'routes.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,27 +16,34 @@ Future<void> main() async {
   Hive.registerAdapter(MealAdapter());
   box = await Hive.openBox<Meal>('Meal');
 
-  String csv = 'csv_meals.csv';
+  String csv = 'meals.csv';
   String fileData = await rootBundle.loadString(csv);
   List<String> rows = fileData.split("\n");
-  for (int i = 0; i < rows.length; i++) {
+
+  for (int i = 1; i < rows.length; i++) { // assuming row 0 is header
     String row = rows[i];
+    if (row.trim().isEmpty) continue;
+
     List<String> itemInRow = row.split(",");
+
     List<String> allergens = itemInRow[4].split(";");
     List<String> preferences = itemInRow[5].split(";");
 
     Meal meal = Meal(
-      int.parse(itemInRow[0]),
-      int.parse(itemInRow[1]),
-      itemInRow[2],
-      int.parse(itemInRow[3]),
-      allergens,
+      id: itemInRow[0],
+      name: itemInRow[1],
+      categoryID: itemInRow[2],
+      timeOfDay: itemInRow[3],
+      allergens: allergens,
+      sensoryTags: preferences,
+      calories: int.tryParse(itemInRow[6]) ?? 0,
+      notes: itemInRow[7],
+      externalUrl: itemInRow[8],
     );
 
-    int key = int.parse(itemInRow[0]);
-    box.put(key, meal);
+    await box.put(meal.id, meal); // Use string ID as key
   }
-  
+
   runApp(
     MultiProvider(
       providers: [
@@ -44,6 +52,9 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider<ThemeProvider>(
           create: (_) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider<SettingsProvider>(
+          create: (_) => SettingsProvider(),
         ),
       ],
       child: const MyApp(),

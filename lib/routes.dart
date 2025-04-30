@@ -18,6 +18,6 @@ class Routes {
         '/preferences': (context) => SensoryPreferencesPage(),
         '/allergens': (context) => AllergensPage(),
         '/days': (context) => DaysPage(),
-        //'/mealplan': (context) => const MealPlanPage(),
+        '/mealplan': (context) => const MealPlanPage(),
       };
 }

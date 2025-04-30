@@ -11,7 +11,7 @@ class Meal extends HiveObject {
   late String name;
 
   @HiveField(2)
-  late String category;
+  late String categoryID;
 
   @HiveField(3)
   late String timeOfDay;
@@ -34,7 +34,7 @@ class Meal extends HiveObject {
   Meal({
     required this.id,
     required this.name,
-    required this.category,
+    required this.categoryID,
     required this.timeOfDay,
     required this.allergens,
     required this.sensoryTags,
@@ -47,7 +47,7 @@ class Meal extends HiveObject {
     return Meal(
       id: fields[0].toString(),
       name: fields[1],
-      category: fields[2],
+      categoryID: fields[2],
       timeOfDay: fields[3],
       allergens: (fields[4] as String).isEmpty ? [] : fields[4].split(';'),
       sensoryTags: (fields[5] as String).isEmpty ? [] : fields[5].split(';'),

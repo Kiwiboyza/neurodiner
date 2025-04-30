@@ -189,6 +189,7 @@ class PeoplePageState extends State<PeoplePage> {
             const SizedBox(height: 100),
             ElevatedButton(
               onPressed: () {
+                Navigator.pushNamed(context, '/mealplan', arguments: people);
                 final personNames = people.map((person) => person.name).join(', ');
                 print('Generating meal plan for: $personNames');
                 print('Allergens: ${people.map((person) => person.allergens).toList()}');
